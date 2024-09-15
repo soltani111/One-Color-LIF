@@ -1,93 +1,71 @@
-
-# Comparative Analysis of 2D Heat Transfer Modeling Using FEniCS and Physics-Informed Neural Networks (PINNs)
+# One-Color LIF Method for Temperature Measurement
 
 ## Introduction
+In this project, we used the one-color Laser-Induced Fluorescence (LIF) method to calculate the temperature of a fluid. This method leverages the fluorescent properties of certain particles, which, when excited by laser light at a specific wavelength, emit radiation in a particular range of electromagnetic waves. The intensity of this emitted light is dependent on temperature, allowing us to determine the fluid's temperature. This temperature dependence varies across different fluorescent materials; for most, the output radiation intensity increases as the temperature decreases.
 
-In this study, the 2D heat transfer problem is first solved with FEniCS. Afterwards, the temperature data on the domain is used as ground truth data for a Physics-Informed Neural Network (PINN). A comparison is made between the PINN and FEniCS data to evaluate the accuracy of the PINN model.
+## Test Theory
+The quantum efficiency \( Q \) plays a central role in this experiment and is influenced by several parameters:
 
-## Geometry Model
+- \( K_{\text{spec}} \): Intensity of fluorescent radiation received by the camera.
+- \( K_{\text{opt}} \): Optical efficiency due to optical equipment.
+- \( \epsilon_1 \) and \( \epsilon_2 \): Absorption coefficients of the fluorescent material and laser light, respectively.
+- \( C \): Concentration of the fluorescent material.
+- \( I_0 \): Intensity of the incoming laser light.
+- \( b \) and \( z \): Path lengths traveled by the beam in the container and the fluorescent radiation perpendicular to the laser sheet.
 
-The 2D square-shaped plate with a size of (1 × 1) is considered in this problem. Boundary conditions in this setup are:
+Given these parameters, the light emitted by the fluorescent materials is dependent on the temperature. This relationship is expressed by the equation:
 
-- Constant wall temperature $\( T = 400 \, \text{K} \) at \( x = 1 \) (0 < y < 1)$ and $\( x = 0 \) (0 < y < 1)$
-- Convection boundary condition $\( h = 40 \, \text{W/m}^2 \cdot \text{K} \)$, $\( T_\infty = 300 \, \text{K} \)$
-- Constant heat flux $\( q'' = 100 \, \text{W/m}^2 \) at \( y = 0 \) (0 < x < 1)$
+\[
+\frac{I_f}{I_{f_{\text{ref}}}} = e^{\beta\left(\frac{1}{T} - \frac{1}{T_0}\right)}
+\]
 
-## FEniCS Solver
+Where:
 
-For two-dimensional steady-state conditions with no generation and constant thermal conductivity, the governing equation of this model is:
+- \( I_f \): Fluorescence intensity in the test mode.
+- \( I_{f_{\text{ref}}} \): Fluorescence intensity in the reference mode.
+- \( \beta \): Experimentally determined coefficient.
+- \( T \) and \( T_0 \): Test and reference temperatures, respectively.
 
-$$
-\nabla^2 T = 0
-$$
+When the temperature is constant but the concentration changes, the relationship becomes:
 
-In the two-dimensional model, the equation becomes:
+\[
+\frac{I_f}{I_{f_{\text{ref}}}} = \frac{C}{C_{\text{ref}}}
+\]
 
-$$
-\frac{\partial^2 T}{\partial x^2} + \frac{\partial^2 T}{\partial y^2} = 0
-$$
+This method assumes a uniform concentration of fluorescent particles throughout the container and low fluctuations of laser light intensity.
 
-FEniCS is based on the finite element method, which is a general and efficient mathematical machinery for the numerical solution of PDEs. The starting point for the finite element methods is a PDE expressed in variational form. To obtain the variational form of the equation, first multiply the equation by the test function \(v\) and integrate over the boundary (\(\Omega\)):
+## Test Equipment
+The experimental setup involved creating a light sheet in the test container using a laser and a cylindrical lens. A camera, placed perpendicular to the laser sheet, captured images of the fluorescent emissions. 
 
-$$
-\int_\Omega \nabla^2 T \, dx = 0 \quad (x \in \Omega)
-$$
+Key equipment details:
+- Fluorescent substance: Rhodamine B dissolved in water.
+- A filter was placed on the camera to capture only fluorescent emissions.
+- The experiment was conducted in a dark room to avoid interference from external light sources.
 
-Expanding the equation gives:
+## Description of Experiment
+1. **Preparation of Fluorescent Solution**:
+    - Dissolve Rhodamine particles in water.
+    - Stir with a magnetic stirrer until the solution becomes uniform.
+    - Determine the solution concentration (reference concentration).
 
-$$
--\int_\Omega \nabla T \cdot \nabla v \, dx + \int_{\partial \Omega} \frac{\partial T}{\partial n} v \, dx = 0 \quad (x \in \Omega)
-$$
+2. **Concentration Measurement**:
+    - Inject a concentrated solution into a container with a dilute solution using a syringe.
+    - Capture images of the fluorescent emissions.
+    - Use the images and reference data to calculate the concentration at any point.
 
-On the convection boundary condition, the right-hand term of the equation becomes:
+3. **Temperature Measurement**:
+    - Stir the uniform solution with a magnetic stirrer and measure the initial temperature (26°C). Capture reference images.
+    - Heat the solution to 53°C while stirring continues, ensuring uniform temperature.
+    - Capture images at both temperatures to develop a calibration curve.
+    - Inject cold fluid and capture additional images to determine temperature distribution using the calibration curve and experimental data.
 
-$$
-\int_{\partial \Omega} \frac{\partial T}{\partial n} v \, dx = -\int_{\partial \Omega} h(T - T_\infty) v \, dx - \int_{\partial \Omega} q'' v \, dx
-$$
+## Results
 
-The variational form of the equation is:
+### Temperature Contour Visualization
+A contour map was generated to visualize the temperature distribution in the fluid. This visualization provides a detailed view of how temperature varies throughout the test container.
 
-$$
-a(T, v) = L(T, v)
-$$
+![Calculation of temperature by linear calibration (degrees Celsius)](/assets/img/posts/projects/lif_1.png)
+*Figure 1: Calculation of temperature by linear calibration (degrees Celsius)*
 
-$$
-a(T, v) = \int_\Omega \nabla T \cdot \nabla v \, dx + \int_{\partial \Omega} hTv \, dx
-$$
-
-$$
-L(T, v) = -\int_{\partial \Omega} q'' v \, dx + \int_{\partial \Omega} h T_\infty v \, dx
-$$
-
-The solution of FEniCS is shown in Figure 1.
-
-<div align="center">
-  <img src="Figures/twod_1.png" alt="FEniCS Solution" width="400" height="300"/>
-  <p><em>Figure 1: FEniCS Solution.</em></p>
-</div>
-
-## PINN Inverse Problem
-
-PINNs directly embed physical laws within the loss function of neural networks. By minimizing the loss function, this approach allows the output variables to automatically satisfy physical equations. We consider an inverse problem with FEniCS ground truth data. Implementation of the PINN with these data obtains the temperature distribution over the domain.
-
-A multi-layer perceptron (MLP) with two input neurons, seven hidden layers with 20 neurons each, and an output layer with one neuron is employed. Equation [2] is used as the loss function of PINN.
-
-The MLP gets \(x\) and \(y\) as input data and obtains temperature (\(T\)) as output. Results of PINN are shown in Figure 2. Ground truth data are shown with `+` in Figure 3. Comparison of PINN and FEniCS is evaluated with the equation below, as shown in Figure 3.
-
-$$
-\text{Error} \ = \frac{T_{\text{PINN}} - T_{\text{FENICS}}}{T_{\text{FENICS}}} \times 100
-$$
-
-Maximum Error in the PINN model is 0.55%, which indicates the acceptable accuracy of the model.
-
-<div align="center">
-  <img src="Figures/twod_2.png" alt="PINN Results" width="400" height="300"/>
-  <p><em>Figure 2: PINN Results.</em></p>
-</div>
-
-<div align="center">
-  <img src="Figures/twod_3.png" alt="Ground truth data, Comparison of PINN and FEniCS" width="400" height="300"/>
-  <p><em>Figure 3: Ground truth data, Comparison of PINN and FEniCS, and Errors between PINN and FEniCS.</em></p>
-</div>
-
-</div>
+## Conclusion
+By analyzing the captured images and employing the calibration curve, we accurately mapped the temperature distribution within the fluid using the one-color LIF method.
