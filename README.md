@@ -66,12 +66,12 @@ A contour map was generated to visualize the temperature distribution in the flu
 
 
 <div align="center">
-    <img width="800" height="600" src="Figures/lif_1.png" alt="Calculation of temperature by linear calibration (degrees Celsius)">
+    <img width="400" height="300" src="Figures/lif_1.png" alt="Calculation of temperature by linear calibration (degrees Celsius)">
     <p><i>Figure 1: Calculation of temperature by linear calibration (degrees Celsius)</i></p>
 </div>
 
 <div align="center">
-    <img width="800" height="600" src="Figures/lif_2.png" alt="Calculation of temperature by linear calibration (degrees Celsius)">
+    <img width="400" height="300" src="Figures/lif_2.png" alt="Calculation of temperature by linear calibration (degrees Celsius)">
     <p><i>Figure 1: Calculation of temperature by linear calibration (degrees Celsius)</i></p>
 </div>
 
