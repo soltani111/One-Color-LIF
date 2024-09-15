@@ -6,12 +6,14 @@ In this project, we used the one-color Laser-Induced Fluorescence (LIF) method t
 ## Test Theory
 The quantum efficiency \( Q \) plays a central role in this experiment and is influenced by several parameters:
 
+$$
 - \( K_{\text{spec}} \): Intensity of fluorescent radiation received by the camera.
 - \( K_{\text{opt}} \): Optical efficiency due to optical equipment.
 - \( \epsilon_1 \) and \( \epsilon_2 \): Absorption coefficients of the fluorescent material and laser light, respectively.
 - \( C \): Concentration of the fluorescent material.
 - \( I_0 \): Intensity of the incoming laser light.
 - \( b \) and \( z \): Path lengths traveled by the beam in the container and the fluorescent radiation perpendicular to the laser sheet.
+$$
 
 Given these parameters, the light emitted by the fluorescent materials is dependent on the temperature. This relationship is expressed by the equation:
 
