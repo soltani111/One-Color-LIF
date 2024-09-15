@@ -64,8 +64,17 @@ Key equipment details:
 ### Temperature Contour Visualization
 A contour map was generated to visualize the temperature distribution in the fluid. This visualization provides a detailed view of how temperature varies throughout the test container.
 
-![Calculation of temperature by linear calibration (degrees Celsius)](/assets/img/posts/projects/lif_1.png)
-*Figure 1: Calculation of temperature by linear calibration (degrees Celsius)*
+
+<div align="center">
+    <img width="400" height="300" src="Figures/lif_1.png" alt="Calculation of temperature by linear calibration (degrees Celsius)">
+    <p><i>Figure 1: Calculation of temperature by linear calibration (degrees Celsius)</i></p>
+</div>
+
+<div align="center">
+    <img width="400" height="300" src="Figures/lif_2.png" alt="Calculation of temperature by linear calibration (degrees Celsius)">
+    <p><i>Figure 1: Calculation of temperature by linear calibration (degrees Celsius)</i></p>
+</div>
+
 
 ## Conclusion
 By analyzing the captured images and employing the calibration curve, we accurately mapped the temperature distribution within the fluid using the one-color LIF method.
