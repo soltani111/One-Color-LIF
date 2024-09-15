@@ -28,11 +28,9 @@ Where:
 - $$\( T \)$$ and $$\( T_0 \)$$: Test and reference temperatures, respectively.
 
 When the temperature is constant but the concentration changes, the relationship becomes:
-$$
-\[
+$$\[
 \frac{I_f}{I_{f_{\text{ref}}}} = \frac{C}{C_{\text{ref}}}
-\]
-$$
+\]$$
 
 This method assumes a uniform concentration of fluorescent particles throughout the container and low fluctuations of laser light intensity.
 
